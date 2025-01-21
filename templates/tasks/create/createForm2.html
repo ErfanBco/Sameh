@@ -1,0 +1,367 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block files %}
+    <link rel="stylesheet" href="{% static './select3/select2.min.css' %}">
+    <!--<link rel="stylesheet" href="{% static './select3/select2totree.css' %}">-->
+
+    <script src="{% static './vue-select/vue2.7.js' %}"></script>
+    <script src="{% static './vue-select/vue-treeselect.umd.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static './vue-select/vue-treeselect.min.css' %}">
+
+
+{% endblock %}
+
+{% block content %}
+    <!-- ToDo select2 translation -->
+
+    <div class="container">
+
+        <h4 class="mt-4" style="font-family: titr;color: #ffffff;float: right">ایجاد برنامه اقدام</h4>
+
+        <!--<div class="container">
+            <input type="text" name="persianDatapicker" id="persianDatapicker">
+
+        </div>-->
+
+        <form method="get" class="needs-validation" action="" style="direction: rtl" novalidate>
+
+
+            {% csrf_token %}
+            <div class="mb-3" style="font-family: nazanin;direction: ltr;">
+                <input onclick="loadActors()" type="text" name="title" class="form-control"
+                       style="text-align: right;direction:rtl"
+                       placeholder="عنوان برنامه" value="" required id="id_title">
+                <div class="invalid-feedback">
+                    Please choose a username.
+                </div>
+            </div>
+
+
+            <div class="mb-3" style="font-family: nazanin;direction: ltr;">
+                <textarea name="comment" rows="4" class="form-control h-auto"
+                          style="text-align: right;direction:rtl" placeholder="شرح برنامه" id="id_comment"></textarea>
+            </div>
+
+
+            <div class="card mb-3 bg-info-subtle">
+                <div class="card-body container">
+
+                    <div id="app" class="row mb-3" style="font-family: nazanin;">
+                        <label class="col-2" for="structure">سازمان اقدام کننده:</label>
+                        <div class="col-9" :dir="rtl ? 'rtl' : 'ltr'">
+                            <treeselect v-on:input="onChange"  v-model="value" :options="options" name="structure"/>
+                        </div>
+                    </div>
+
+                    <div id="app2" class="row mb-3" style="font-family: nazanin;">
+                        <label class="col-2" for="actors">اقدام کنندگان:</label>
+                        <div class="col-9" :dir="rtl ? 'rtl' : 'ltr'">
+                            <treeselect v-model="value"  :disabled="disabled" :multiple="true" :auto-load-root-options="false"  :options=options :loading="true" :load-options="loadOptions"  name="actors"/>
+                        </div>
+                    </div>
+
+                    <div id="app3" class="row mb-3" style="font-family: nazanin;direction: rtl;">
+                        <label class="col-2" for="contract"> قرارداد:</label>
+                        <div class="col-9" :dir="rtl ? 'rtl' : 'ltr'">
+                            <treeselect v-model="value"  :disabled="disabled" :multiple="true" :auto-load-root-options="false"  :options=options :loading="true" :load-options="loadOptions"  name="contract"/>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-md-center">
+                        <div class="col-5 mb-3 input-group" style="font-family: nazanin;direction: ltr;">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon">ریال</span>
+                            </div>
+                            <input type="text" name="fee" class="form-control" style="text-align: right;direction:rtl"
+                                   x-data="true"
+                                   x-mask:dynamic="$money($input, &#x27;.&#x27;, &#x27;,&#x27;)"
+                                   placeholder="پاداش اقدام"
+                                   required id="id_fee" aria-describedby="basic-addon">
+                        </div>
+
+
+                        <div class="col-5 mb-3 input-group" style="font-family: nazanin;direction: ltr;">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon2">ریال</span>
+                            </div>
+                            <input type="text" name="delay_punishment" class="form-control"
+                                   style="text-align: right;direction:rtl"
+                                   x-data="true" x-mask:dynamic="$money($input, &#x27;.&#x27;, &#x27;,&#x27;)"
+                                   placeholder="جریمه دیرکرد به ازای روز" required id="id_delay_punishment"
+                                   aria-describedby="basic-addon2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card mb-3 bg-info-subtle">
+                <div class="card-body">
+                    <div class="row mb-3" style="font-family: nazanin;direction: rtl;">
+                        <label class="col-2" for="Validator"> سازمان تایید کننده:</label>
+
+                        <select name="validatorStructure" class="col-9 form-control" onchange="ValidatorChange()"
+                                id="ValidatorStructure"
+                                style="text-align: right;direction:rtl">
+                            <option value="0">بدون تایید کننده</option>
+
+                            <option value="1">آقای احمدی</option>
+
+                            <option value="2">آقای رحمتی</option>
+
+                            <option value="3">فر</option>
+                        </select>
+                    </div>
+
+                    <div class="row mb-3" style="font-family: nazanin;direction: rtl;">
+                        <label class="col-2" for="Validator">تایید کننده:</label>
+
+                        <select name="validator" class="col-9 form-control" onchange="ValidatorChange()" id="Validator"
+                                style="text-align: right;direction:rtl">
+                            <option value="0">بدون تایید کننده</option>
+
+                            <option value="1">آقای احمدی</option>
+
+                            <option value="2">آقای رحمتی</option>
+
+                            <option value="3">فر</option>
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2"></div>
+                        <div class="col-9 mb-3 input-group" style="font-family: nazanin;direction: ltr;">
+                            <div class="input-group-append">
+                                <span class="input-group-text" id="basic-addon3">ریال</span>
+                            </div>
+                            <input type="text" name="ValidatorFee" class="form-control" id="ValidatorFee"
+                                   disabled="true"
+                                   style="text-align: right;direction:rtl" x-data="true"
+                                   x-mask:dynamic="$money($input, &#x27;.&#x27;, &#x27;,&#x27;)"
+                                   placeholder="پاداش تایید"
+                                   required aria-describedby="basic-addon3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col" style="font-family: nazanin">
+                    <input type="number" name="year" class="form-control" x-data="true" minlength="4" maxlength="4"
+                           x-mask="9999" style="text-align: right" value="1403" required id="id_year">
+                </div>
+
+                <!-- TODO year field is not validated -->
+                <!-- TODO delivery_date field doesn't have  a font -->
+
+
+                <div class="col" style="font-family: nazanin">
+                    <select name="month" class="form-control" id="FormMonth" style="text-align: right" value="6">
+                        <option value="01">فروردین</option>
+
+                        <option value="02">اردیبهشت</option>
+
+                        <option value="03">خرداد</option>
+
+                        <option value="04">تیر</option>
+
+                        <option value="05">مرداد</option>
+
+                        <option value="06">شهریور</option>
+
+                        <option value="07">مهر</option>
+
+                        <option value="08">آبان</option>
+
+                        <option value="09">آذر</option>
+
+                        <option value="10">دی</option>
+
+                        <option value="11">بهمن</option>
+
+                        <option value="12">اسفند</option>
+
+                    </select>
+                </div>
+            </div>
+
+            <!-- TODO year field is not validated -->
+            <!-- TODO delivery_date field doesn't have  a font -->
+
+
+            <div class="mb-3" style="font-family: nazanin;direction: ltr;">
+
+                <label for="persianDatapicker" style="float: right">:تاریخ تحویل</label>
+
+
+                <input type="text" name="delivery_date" name="persianDatapicker" style="text-align: right" x-data="true"
+                       x-mask:dynamic="9999/99/99" id="persianDatapicker" class="form-control" placeholder="تاریخ تحویل"
+                       required>
+            </div>
+
+
+            <div style="font-family: titr" class="mb-3">
+                <button class="btn btn-primary d-block mx-auto px-4" type="submit">ثبت</button>
+            </div>
+        </form>
+    </div>
+
+
+
+    {% autoescape off %}
+        <script type="module">
+            //import { ASYNC_SEARCH } from "{% static './vue-select/vue-treeselect.umd.min.js' %}"
+            Vue.component('treeselect', VueTreeselect.Treeselect)
+            Vue.use(VueTreeselect.LOAD_ROOT_OPTIONS)
+            let x=10;
+
+            const v1 = new Vue({
+                el: '#app',
+                data: {
+                    rtl: true,
+                    value: null,
+                    options: [{{ StructuresJson }}],
+                },
+                methods: {
+                    onChange: function (value, instanceId) {
+                        v2.disabled = (value == null);
+                        v3.disabled = (value == null);
+                        v2.options = null;
+                        v3.options = null;
+                        v2.value = null;
+                        v3.value = null;
+                        if (xhttp) {
+                            xhttp.abort();
+                        }
+                        if (xhttp2) {
+                            xhttp2.abort();
+                            //$("#response").html( "Request aborted.<br>Undefined as data is lost due to abort");
+                        }
+                    },
+              },
+            })
+            //Vue.component('treeselect', VueTreeselect.Treeselect)
+            const v2 = new Vue({
+                el: '#app2',
+                data: {
+                    rtl: true,
+                    value: null,
+                    disabled : true,
+                    options: null,
+                },
+                methods: {
+                    loadOptions({ action, callback, instanceId  }) {
+                      if (action === 'LOAD_ROOT_OPTIONS') {
+                          let error = null
+                        simulateAsyncOperation(() => {
+                            if (v1.value !== null) {
+                                const xhttp = new XMLHttpRequest();
+                                xhttp.onload = function() {
+                                    parseAJAX(v2,this.responseText)
+                                    callback(error)
+                                }
+                                xhttp.open("POST", "/tasks/getActors/");
+                                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                xhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                                xhttp.send("structureID="+v1.value);
+                            }else {
+                                error = new Error('لطفا ابتدا سازمان اقدام کننده را انتخاب کنید!')
+                                callback(error)
+                            }
+                        })
+                      }
+                    },
+              },
+            })
+
+            const v3 = new Vue({
+                el: '#app3',
+                data: {
+                    rtl: true,
+                    value: null,
+                    disabled : true,
+                    options: null,
+                },
+                methods: {
+                    loadOptions({ action, callback, instanceId  }) {
+                      if (action === 'LOAD_ROOT_OPTIONS') {
+                          let error = null
+                        simulateAsyncOperation(() => {
+                            if (v1.value !== null) {
+                                const xhttp = new XMLHttpRequest();
+                                xhttp.onload = function() {
+                                    parseAJAX(v3,this.responseText)
+                                    callback(error)
+                                }
+                                xhttp.open("POST", "/tasks/getActors/");
+                                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                xhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                                xhttp.send("structureID="+v1.value);
+                            }else {
+                                error = new Error('لطفا ابتدا سازمان اقدام کننده را انتخاب کنید!')
+                                callback(error)
+                            }
+                        })
+                      }
+                    },
+              },
+            })
+
+            function parseAJAX(vue, response){
+                //console.log((JSON.parse(this.responseText).json));
+                //console.log(JSON.parse("["+JSON.parse(this.responseText).json+"]"));
+                vue.options = JSON.parse("["+JSON.parse(response).json+"]");
+                /*v2.options = [1, 2, 3, 4, 5].map(i => ({
+                    id: `wd`,
+                    label: x,
+                }))*/
+            }
+
+            const simulateAsyncOperation = fn => {
+              setTimeout(fn, 100)
+            }
+
+
+
+
+        </script>
+    {% endautoescape %}
+
+
+<code>CsrfViewMiddleware</code>
+    <script>
+
+
+        function loadActors() {
+            //alert("wdw");
+            const node = document.createElement("option");
+            const nodeValue = document.createTextNode("Test");
+            node.appendChild(nodeValue);
+            node.setAttribute("value", "13");
+            document.getElementById("multiple-checkboxes").appendChild(node);
+            $('#multiple-checkboxes').multiselect('rebuild', {
+                includeSelectAllOption: true,
+            });
+        }
+
+
+    </script>
+
+
+
+    <script src="{% static './ImTheAuthor/ValidatorChange.js' %}"></script>
+    <script src="{% static './ImTheAuthor/bs-form-validation.js' %}"></script>
+
+    <script src="{% static './select3/select2.min.js' %}"></script>
+    <!--<script src="{% static './select3/select2totree.js' %}"></script>-->
+
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,42 @@
+ {% load static %}
+            <h4 style="font-family: titr;color: #ffffff;float: right">ایجاد برنامه اقدام</h4>
+
+    <!--<div class="container">
+        <input type="text" name="persianDatapicker" id="persianDatapicker">
+
+    </div>-->
+            <form method="post" action="" style="direction: rtl">
+
+
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field.label == 'سال' or field.label == 'ماه' %}
+                        <div style="font-family: nazanin">
+                            {{ field }}
+
+                        </div>
+
+                        <!-- TODO year field is not validated -->
+                        <!-- TODO delivery_date field doesn't have  a font -->
+
+
+
+                    {% else %}
+
+
+                        <div class="mb-3" style="font-family: nazanin;direction: ltr;">
+                            {% if field.label == 'کارمندان' or field.label == 'تایید کننده' or field.label == 'تاریخ تحویل' %}
+                                <p style="float: right">:{{ field.label }}</p>
+                            {% endif %}
+
+                            {{ field }}
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+                <div style="font-family: titr" class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">ثبت</button></div>
+            </form>
+
+<script src="{% static './ImTheAuthor/ValidatorChange.js' %}"></script>

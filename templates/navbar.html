@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+
+  <div class="container-fluid" >
+
+    <a class="navbar-brand" style="font-family: entezar">سامانه ارزشیابی و مدیریت عملکرد (سامع)</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+ <div class="navbar pull-right">
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup" >
+      <div class="navbar-nav">
+        <!--<a class="nav-link active" aria-current="page" href="/Home">Home</a>
+        <a class="nav-link" href="/Accounting">Accounting</a>-->
+
+
+          <a style="color: #ffffff;vertical-align: center;margin-right: 5em;font-family: nazanin"> کاربر:  {{ name }}</a>
+
+          <form action="/logout">
+            <button style="margin-right:0.5em;font-family: nazanin" type="submit" class="btn btn-dark">خروج</button>
+          </form>
+
+      </div>
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa fa-bars"></i></button>
+
+
+    </div>
+         </div>
+
+  </div>
+</nav>
+
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+                  <div class="offcanvas-body">
+                      <div class="list-group" >
+                              <a href="/tasks" style="font-family: entezar;text-align: center" type="submit" class="list-group-item list-group-item-action {{ home }}" aria-current="true">
+                                کارتابل
+                              </a>
+
+                            <a href="/report" style="font-family: entezar;text-align: center" type="submit" class="list-group-item list-group-item-action {{ home }}" aria-current="true">
+                                گزارش
+                            </a>
+
+                      </div>
+
+
+                      <div class="list-group" style="margin-top: 0.25em">
+                              <a href="/account/changePassword" style="font-family: entezar;text-align: center" type="submit" class="list-group-item list-group-item-action {{ home }}" aria-current="true">
+                                تغییر رمزعبور
+                              </a>
+
+                        </div>
+                <!--<ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li style="color: #000000" class="nav-item"><a class="nav-link active" href="index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="table.html"><i class="fas fa-table"></i><span>Table</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="far fa-user-circle"></i><span>Login</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="register.html"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
+                </ul>-->
+                  </div>
+        </div>

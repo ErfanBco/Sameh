@@ -1,0 +1,12 @@
+{% if messages %}
+<!-- TODO: give alerts font color -->
+
+    {% for msg in messages %}
+
+        <p style="font-family: entezar;text-align: center;" class="alert alert-{{ msg.tags }}">{{ msg }}</p>
+
+
+    {% endfor %}
+
+
+{% endif %}

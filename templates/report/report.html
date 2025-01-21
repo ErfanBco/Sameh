@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+
+
+    table {
+  direction: rtl;
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  font-family: nazanin;
+
+}
+
+td, th {
+  border: 1px solid #000000;
+  text-align: left;
+  padding: 8px;
+    text-align: center;
+  color: black;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+
+{% endblock %}
+
+{% block content %}
+    {% include 'navbar.html' %}
+
+
+    <div style="display: grid;place-items: center;margin-top: 0.5em;padding-bottom: -1em">
+
+
+
+        <div style="display: inline-flex">
+            <form id="filterForm" class="form-inline my-2 my-lg-0" action="" style="font-family: nazanin">
+                <div style="">
+                    {% include 'month_filter.html' %}
+                </div>
+            </form>
+        </div>
+
+        {% if employeesCount > 1 %}
+            <section id="two" class="card card-body" style="padding-bottom: -5em">
+                <table>
+                    <th>نام</th>
+                    <th>جمع کل بودجه این ماه</th>
+                    <th>جمع کل پرداختی این ماه</th>
+                    <th style="background-color: #06a93a">درصد تخصیص بودجه این ماه</th>
+
+                    <th>جمع کل بودجه از ابتدا سال تا این ماه</th>
+                    <th>جمع کل پرداختی از ابتدا سال تا این ماه</th>
+                    <th style="background-color: #06a93a">درصد تخصیص بودجه از ابتدا سال تا این ماه</th>
+                    {% for data  in Data2 %}
+                        {% include 'report/J2.html' %}
+                    {% endfor %}
+                </table>
+                <a style=";font-size: x-small;text-align: right;font-family: nazanin">ارقام به ریال</a>
+            </section>
+        {% endif %}
+
+    </div>
+
+
+
+
+
+
+    <section id="one" style="border-top-right-radius: 5px;padding: 2em;border-top-left-radius: 5px;background-color: white;display:block;margin: 1em">
+
+        {% if employeesCount != 0 %}
+            <table>
+                <tr>
+                    <th>نام</th>
+                    <th>تعداد کل برنامه ها</th>
+                    <th>تعداد برنامه های انجام شده</th>
+                    <th>مبلغ تعریف شده</th>
+                    <th>میزان دریافتی از تاییدکنندگی</th>
+                    <th style="background-color: #0bdead;">کارانه دریافتی</th>
+                    <th style="background-color: #0bdead;">نرخ اضافه کاری</th>
+                    <th style="background-color: #0bdead;">ساعت اضافه کار عملکردی</th>
+                    <th style="background-color: #0bdead;">ساعت اضافه کار واقعی</th>
+                    <th style="background-color: #0bdead;">مبلغ پرداختي</th>
+                    <th style="background-color: #83ff8a">میزان ارفاق پرداختی در ماه جاری</th>
+                    <th style="background-color: #83ff8a">میزان ارفاق پرداختی از ابتدا سال تاکنون</th>
+                    <th style="background-color: #a6defc;">بودجه ماه جاری</th>
+                    <th style="background-color: #a6defc;">بودجه از ابتدا سال تاکنون</th>
+                    {% if employeesCount > 1 %}
+                        <th>عملیات</th>
+                    {% endif %}
+
+                </tr>
+                {% for employee in Data %}
+                    <tr>
+                        <!-- Name --->
+                        <td rowspan="2">{{ employee.0 }}</td>
+                        <!-- Total Tasks Count -->
+                        <td rowspan="2">{{ employee.28 }}</td>
+                        <!--  Total Finished Tasks -->
+                        <td rowspan="2">{{ employee.1 }}</td>
+                        <!-- Total Fee -->
+                        <td rowspan="2" style="font-weight: bold;direction: ltr">{{ employee.27 }}</td>
+                        <!-- Validation Payment -->
+                        <td rowspan="2" style="font-weight: bold;direction: ltr">{{ employee.21 }}</td>
+
+
+                        {% if employee.5 == 0 %}
+                            <td  style="background-color: #0fc09b99;direction: ltr">
+                                <a style="font-weight: bold;font-size: large">{{ employee.2 }} %</a>
+                            </td>
+                        {% else %}
+                            <td style="font-weight: bold;background-color: #0fc09b99;direction: ltr">
+                                {% if employee.5 > 0 %}
+                                    <a>{{ employee.2 }} % + </a>
+                                {% else %}
+                                    <a>{{ employee.2 }} % - </a>
+                                {% endif %}
+                                <a style="color: royalblue;text-decoration: underline;text-decoration-style: dotted;text-decoration-color: royalblue" title="ارفاق">{{ employee.13 }} % </a>
+                                <a style="font-weight: bold;font-size: large">= {{ employee.25 }} %</a>
+                            </td>
+                        {% endif %}
+
+                        <!-- HourlyRate-->
+                        <td style="background-color: #0fc09b99;">{{ employee.22 }}</td>
+
+                        <!-- ExtraHour -->
+                        {% if employee.6 == 0 %}
+                            <td style="background-color: #0fc09b99;">
+                                 <a style="font-size: large;font-weight: bold">{{ employee.7 }}</a>
+                            </td>
+                         {% else %}
+                             <td style="background-color: #0fc09b99;font-weight: bold;direction: ltr">
+                                 {% if employee.6   > 0 %}
+                                     <a>{{ employee.7 }} +  </a>
+                                  {% else %}
+                                     <a>{{ employee.7 }} - </a>
+                                  {% endif %}
+                                 <a style="color: royalblue;text-decoration: underline;text-decoration-style: dotted;text-decoration-color: royalblue" title="ارفاق">{{ employee.14 }}</a>
+                                 <a style="font-size: large;font-weight: bold">= {{ employee.24 }}</a>
+                             </td>
+                        {% endif %}
+                        <!-- Real ExtraHour -->
+                        <td style="background-color: #0fc09b99;">{{ employee.15 }}</td>
+                        <!-- Total of Total -->
+                        <td rowspan="2" style="background-color: #0fc09b99;font-weight: bold;direction: ltr" title="مبلغ واقعی: {{ employee.23 }}">
+                            {{ employee.9 }}
+                            {% if employee.26 %}
+                                <div title="مبلغ پرداختی بیش از بودجه ماه">
+                                    <svg  width="30" height="30" fill="red" class="bi bi-sign-stop-fill" viewBox="0 0 16 16">
+                                      <path d="M10.371 8.277v-.553c0-.827-.422-1.234-.987-1.234-.572 0-.99.407-.99 1.234v.553c0 .83.418 1.237.99 1.237.565 0 .987-.408.987-1.237Zm2.586-.24c.463 0 .735-.272.735-.744s-.272-.741-.735-.741h-.774v1.485h.774Z"/>
+                                      <path d="M4.893 0a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353L11.46.146A.5.5 0 0 0 11.107 0H4.893ZM3.16 10.08c-.931 0-1.447-.493-1.494-1.132h.653c.065.346.396.583.891.583.524 0 .83-.246.83-.62 0-.303-.203-.467-.637-.572l-.656-.164c-.61-.147-.978-.51-.978-1.078 0-.706.597-1.184 1.444-1.184.853 0 1.386.475 1.436 1.087h-.645c-.064-.32-.352-.542-.797-.542-.472 0-.77.246-.77.6 0 .261.196.437.553.522l.654.161c.673.164 1.06.487 1.06 1.11 0 .736-.574 1.228-1.544 1.228Zm3.427-3.51V10h-.665V6.57H4.753V6h3.006v.568H6.587Zm4.458 1.16v.544c0 1.131-.636 1.805-1.661 1.805-1.026 0-1.664-.674-1.664-1.805V7.73c0-1.136.638-1.807 1.664-1.807 1.025 0 1.66.674 1.66 1.807ZM11.52 6h1.535c.82 0 1.316.55 1.316 1.292 0 .747-.501 1.289-1.321 1.289h-.865V10h-.665V6.001Z"/>
+                                    </svg>
+                                </div>
+                            {% endif %}
+                        </td>
+
+                        <!-- Leniency Total Payment -->
+                        <td rowspan="2" style="background-color: #b1ffb5;font-weight: bold;direction: ltr">{{ employee.18 }}</td>
+                        <!-- Leniency Total Yearly Payment -->
+                        <td rowspan="2" style="background-color: #b1ffb5;font-weight: bold;direction: ltr">{{ employee.19 }}</td>
+                        <!-- MonthlyBudget -->
+                        <td rowspan="2" style="background-color: #9ec5e1;font-weight: bold;direction: ltr">{{ employee.16 }}</td>
+                        <!-- YearlyBudget -->
+                        <td rowspan="2" style="background-color: #9ec5e1;font-weight: bold;direction: ltr">{{ employee.17 }}</td>
+
+
+
+
+                        {% if name != employee.0 and employee.20 %}
+                            <td rowspan="2" style="direction: ltr">
+                                <button title="ارفاق" class="btn btn-primary" data-toggle="collapse" data-target="#collapseExample{{ employee.10 }}" role="button" aria-expanded="false" aria-controls="collapseExample" style="font-size: smaller;margin-bottom: 1em">
+                                    <svg width="16" height="16" fill="currentColor" class="bi bi-gift-fill" viewBox="0 0 16 16">
+                                        <path d="M3 2.5a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0v.006c0 .07 0 .27-.038.494H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h2.038A2.968 2.968 0 0 1 3 2.506V2.5zm1.068.5H7v-.5a1.5 1.5 0 1 0-3 0c0 .085.002.274.045.43a.522.522 0 0 0 .023.07zM9 3h2.932a.56.56 0 0 0 .023-.07c.043-.156.045-.345.045-.43a1.5 1.5 0 0 0-3 0V3zm6 4v7.5a1.5 1.5 0 0 1-1.5 1.5H9V7h6zM2.5 16A1.5 1.5 0 0 1 1 14.5V7h6v9H2.5z"/>
+                                    </svg>
+                                </button>
+                                <button title="اضافه کاری واقعی" class="btn btn-info" data-toggle="collapse" data-parent="" data-target="#collapseExtra{{ employee.10 }}" onchange="close()" role="button" aria-expanded="false" aria-controls="collapseExample" style="font-size: smaller">
+                                    <svg width="18" height="18" fill="currentColor" class="bi bi-coin" viewBox="0 0 16 16">
+                                      <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"/>
+                                      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                      <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+                                    </svg>
+                                </button>
+
+                                <div class="collapse"  id="collapseExample{{ employee.10 }}">
+                                    {% include 'report/leniency.html' %}
+                                </div>
+                                <div class="collapse"  id="collapseExtra{{ employee.10 }}">
+                                    {% include 'report/real_extrahour.html' %}
+                                </div>
+                            </td>
+                        {% else %}
+                            {% if employeesCount > 1 %}
+                                <td rowspan="2">
+                                    -
+                                </td>
+                            {% endif %}
+                        {% endif %}
+
+                    </tr>
+
+                    <tr>
+                        <td style="background-color: #0fc09b99;">{{ employee.3 }} از {{ employee.4 }}</td>
+                        <td colspan="3" style="background-color: #0fc09b99;direction: ltr">{{ employee.8 }}</td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+
+
+        {% endif %}
+        <a style="font-size: smaller;float: right;font-family: nazanin">ارقام به ریال</a>
+
+    </section>
+
+
+    <section id="three" class="card card-body" style="margin: 1em">
+        <h4 style="text-align: center;font-family: entezar">اقدام ها</h4>
+        {% if lenData3 == 0 %}
+            <a style="font-family: nazanin;direction: rtl;text-align: center">اقدامی برای این ماه یافت نشد!</a>
+
+        {% else %}
+            <table>
+                <th>عنوان</th>
+                <th>تعریف کننده</th>
+                <th>نوع</th>
+                <th>پاداش اقدام/تایید</th>
+                <th>مبلغ دریافتی اقدام/تایید</th>
+                <th>موعد انجام</th>
+                <th>تاریخ انجام</th>
+                {% for data  in Data3 %}
+                    {% include 'report/J3.html' %}
+                {% endfor %}
+            </table>
+            <a style=";font-size: x-small;text-align: right;font-family: nazanin">ارقام به ریال</a>
+        {% endif %}
+    </section>
+
+
+
+    <script>
+      $( function() {
+        $( document ).tooltip();
+      } );
+    </script>
+    <script>
+    $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+    </script>
+
+{% endblock %}

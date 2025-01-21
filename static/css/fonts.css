@@ -1,0 +1,18 @@
+@font-face {
+    font-family: entezar;
+    src: local('entezar'),
+    url('../fonts/entezar.ttf') format("truetype");
+  }
+  
+  @font-face {
+    font-family: titr;
+    src: local('titr'),
+    url('../fonts/titr.ttf') format("truetype");
+  }
+  
+    @font-face {
+    font-family: nazanin;
+    src: local('nazanin'),
+    url('../fonts/nazanin.ttf') format("truetype");
+  }
+  

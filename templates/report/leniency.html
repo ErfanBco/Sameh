@@ -1,0 +1,26 @@
+
+    <form action="leniency/{{ employee.10 }}/" method="post" style="display: inline-block">
+        {% csrf_token %}
+        <div style="display: inline-flex">
+            <div class="card card-body">
+                <label id="label{{ employee.10 }}" for="leniencyTasks{{ employee.10 }}">ارفاق کارانه دریافتی: %{{ employee.5 }}</label>
+                <input name="leniencyTasks" onchange="setLabel{{ employee.10 }}()" id="leniencyTasks{{ employee.10 }}" type="range" min="-{{ employee.2 }}" max="{{ employee.11 }}" value="{{ employee.5 }}">
+                <script>
+                    function setLabel{{ employee.10 }}() {
+                        const Range = document.getElementById('leniencyTasks{{ employee.10 }}').value
+                        document.getElementById('label{{ employee.10 }}').innerText = Range+'% :ارفاق کارانه دریافتی '
+                    }
+                </script>
+            </div>
+            <div>
+                <label for="leniencyExtraHour" >:ارفاق اضافه کار</label>
+                <div class="input-group" style="margin: 0.25em 0.5em;">
+                    <span class="input-group-text" id="basic-addon2">ساعت</span>
+                    <input name="leniencyExtraHour"  id="leniencyExtraHour" type="number"  class="form-control" value="{{ employee.6}}" aria-label="Input group example" aria-describedby="basic-addon2" required>
+                </div>
+                <button class="btn btn-success" style="font-family: titr">ثبت</button>
+            </div>
+        </div>
+        <input type="hidden" value="{{ current_year_index }}" name="year">
+        <input type="hidden" value="{{ current_month_index }}" name="month">
+    </form>

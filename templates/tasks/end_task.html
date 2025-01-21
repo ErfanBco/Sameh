@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+    <div class="card text-right" style="background: linear-gradient(171deg, var(--bs-cyan) 0%, var(--bs-cyan) 20%, var(--bs-cyan) 100%);margin-top: 2em;margin-bottom: 2em;margin-left: 2em;margin-right: 2em;">
+        <div class="card-header" style="font-family: titr">
+            <h4 style="font-family: titr;color: #ffffff;float: right;direction: rtl"> خاتمه برنامه اقدام: {{ Task.title }}</h4>
+
+            <a href="../../" class="btn btn-light" style="float:left;margin: 0.5em">
+                <svg  width="16" height="16" fill="currentcolor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                  <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                </svg>
+            </a>
+        </div>
+        <div class="card-body">
+            <form method="post" action="" style="display: grid;place-items: center">
+                {% csrf_token %}
+                <div style="display: block;">
+                    <h4 style="font-family: entezar;text-align: center"> پاداش کارمند: <u style="text-decoration-color: #00000070">{{ Task.employee }}</u></h4>
+                    <div class="card-footer" style="font-family: entezar;display: inline-flex;float: right">
+                        <div style="margin-right: 2em;display: inline-flex">
+                            <p style="color: gray;margin-right: 1em">ریال</p>
+                            <p style="color: black;margin-right: 1em">{{ Task.fee }}</p>
+                            <p style="color: gray;margin-right: 1em">: پاداش</p>
+                        </div>
+                        <p style="margin-right: 2em"> - </p>
+                        <div style="margin-right: 2em;display: inline-flex">
+                            <p style="color: gray;margin-right: 1em">ریال</p>
+                            <p style="color: red;margin-right: 1em">{{ Task.delay_punishment }} × {{ Delay }}</p>
+                            <p style="color: gray;margin-right: 1em">:  روز تاخیر × جریمه</p>
+                        </div>
+                        <p style="margin-right: 2em"> = </p>
+                        <div class="mb-3">
+                            <label for="final_payment">:پاداش نهایی</label>
+                            <input id="finalPayment" class="form-control" x-data="true" x-mask:dynamic="$money($input, '.', ',')" type="text" oninput="checkValue()" name="final_payment" value="{{ FinalFee }}">
+                        </div>
+                        <!-- {% if not isSuperior %}
+                            <p style="display: block;text-align: center;font-family: entezar;color: palevioletred;text-shadow: 2px 2px #0b2e1330;">
+                                <svg style="" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond-fill" viewBox="0 0 16 16">
+                                    <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098L9.05.435zM8 4c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995A.905.905 0 0 1 8 4zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                                </svg>
+                                کارگزار درخواست خاتمه داده است
+                            </p>
+                        {% endif %} -->
+                    </div>
+                    <div class="card-footer" style="margin-right: 6em;font-family: entezar;display: inline-block;float: left">
+                        <p style="margin-right: 2em">تاریخ تحویل  :  {{ Task.delivery_date }}</p>
+                        <p style="margin-right: 2em">تاریخ امروز  :  {{ Today }}</p>
+                    </div>
+                </div>
+
+
+                {% if isSuperior and HasValidator %}
+                    <div style="margin: 2em">
+                        <h4 style="font-family: entezar;text-align: center"> پاداش تایید کننده: <u>{{ Task.validator }}</u></h4>
+                        <div class="card card-footer">
+                            <div class="mb-3">
+                                <label for="final_payment" style="font-family: entezar">:پاداش نهایی</label>
+                                <input id="ValidatorFinalPayment" class="form-control" x-data="true" x-mask:dynamic="$money($input, '.', ',')" type="text" oninput="checkValidatorValue()" name="ValidatorFinal_payment" value="{{ ValidatorFinalFee }}">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div style="font-family: titr;margin-top: 1em" class="mb-3"><button class="btn btn-success d-block w-100" type="submit">خاتمه</button></div>
+            </form>
+        </div>
+    </div>
+
+
+<script>
+    function checkValue(){
+        const input = document.getElementById('finalPayment');
+        const Value = parseInt(input.value.replaceAll(",", ""));
+        //window.alert(Value)
+        const isSuperior = "{{ isSuperior }}";
+        if (isSuperior === "False") {
+            input.value = Math.min(Value, {{ FinalFee }});
+        }
+
+    }
+
+    function checkValidatorValue(){
+        const input = document.getElementById('ValidatorFinalPayment');
+        const Value = parseInt(input.value.replaceAll(",", ""));
+        //window.alert(Value)
+        const isSuperior = "{{ isSuperior }}";
+        if (isSuperior === "False") {
+            input.value = Math.min(Value, {{ ValidatorFinalFee }});
+        }
+    }
+
+</script>
+
+
+{% endblock %}
+

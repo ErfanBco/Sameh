@@ -1,0 +1,67 @@
+<div style="display: inline-flex;place-items: center;margin-top: -2em">
+
+    <form id="switchForm" action="" method="post" style="margin: 1em 2em 1em 2em;padding: 1em;border-radius: 5px;background-color: white">
+        {% csrf_token %}
+        <a style="font-family: nazanin;color: black">خاتمه یافته</a>
+        <div class="form-check form-switch form-check-inline" style="margin-left: 1em">
+            <input {{ switchStatus }} onchange="switchSubmit()" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <input type="hidden" name="switch" id="switch" value="{{ switchStatus }}">
+            <script>
+                function switchSubmit(){
+                    document.getElementById('switch').value = document.getElementById('flexSwitchCheckDefault').checked
+                    $('#switchForm').submit();
+                }
+            </script>
+        </div>
+        <a style="font-family: nazanin;color: black">در جریان</a>
+    </form>
+
+
+    <form id="filterForm" class="form-inline my-2 my-lg-0" action="" style="font-family: nazanin;display: inline-flex">
+
+        <div class="card text-right bg-light-subtle" style="margin-bottom: 1em;margin-right: 2em">
+
+            <div class="card-body" style="display:grid;place-items: center">
+                {% if employeesCount != 0 %}
+                    <div style="display: inline-flex">
+                        <label for="multiple-checkboxes2" style="font-family: nazanin;color: gray">کارمندان :</label>
+                        <select name="e" class="form-group" id="multiple-checkboxes2" multiple>
+                            {% for employee in employees %}
+                                <option value="{{ employee.0 }}"
+                                {% for selected in employeesSelected %}
+                                    {% if selected == employee.0 %}
+                                        selected
+                                    {% endif %}
+                                {% endfor %}
+                                >{{ employee.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <input style="margin: 1em 1em;direction: rtl" name="search" class="form-control mr-sm-2" type="search" placeholder="جست و جو" aria-label="Search" value="{{ search }}">
+                    <input class="btn btn-success" type="submit" value="برو">
+                </div>
+            <small style="direction: rtl">{{ TasksCount }} برنامه اقدام یافت شد </small>
+            </div>
+        </div>
+
+        {% include 'month_filter.html' %}
+    </form>
+
+    <div style="margin-left: 2em;background-color: whitesmoke;border-radius: 5px;padding-top: 0.25em;padding-left: 0.25em;padding-right: 0.25em;padding-bottom: -100em">
+        <p style="color: white;text-shadow: 2px 1px #00000050;text-align: center;border-radius: 5px;padding: 0.25em;font-family: nazanin;background: linear-gradient(180deg, var(--bs-orange) 0%, var(--bs-orange) 20%, var(--bs-orange) 100%);">
+            تعریف شده توسط شما ({{ TasksCount2.1 }})
+        </p>
+        <p style="color: white;text-shadow: 2px 1px #00000050;text-align: center;border-radius: 5px;padding: 0.25em;font-family: nazanin;background: linear-gradient(171deg, var(--bs-cyan) 0%, var(--bs-cyan) 20%, var(--bs-green) 100%);">
+            ({{ TasksCount2.0 }}) منتظر اقدام شما
+        </p>
+        <p style="color: white;text-shadow: 2px 1px #00000050;text-align: center;border-radius: 5px;padding: 0.25em;font-family: nazanin;background: linear-gradient(171deg, #EBEF95 0%, #EFD595 50%, #EFD595 100%);">
+           ({{ TasksCount2.2 }}) منتظر تایید شما
+        </p>
+    </div>
+
+
+</div>
+

@@ -1,0 +1,13 @@
+
+<form action="realExtraHour/{{ employee.10 }}/" method="post" style="display: inline-block">
+    {% csrf_token %}
+    <label for="RealExtraHour" >: اضافه کار واقعی</label>
+    <div class="input-group" style="margin: 0.25em 0.5em;">
+        <span class="input-group-text" id="basic-addon2">ساعت</span>
+        <input name="RealExtraHour"  id="RealExtraHour" type="number"  class="form-control" value="{{ employee.15}}" aria-label="Input group example" aria-describedby="basic-addon2" required>
+    </div>
+    <button class="btn btn-success" style="font-family: titr">ثبت</button>
+    <input type="hidden" value="{{ employee.7 }}" name="PerformanceExtraHour">
+    <input type="hidden" value="{{ current_year_index }}" name="year">
+    <input type="hidden" value="{{ current_month_index }}" name="month">
+</form>

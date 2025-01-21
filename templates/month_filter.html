@@ -1,0 +1,94 @@
+        <div style="display: block;border-radius: 5px;background-color: white;margin-bottom: 1em">
+            <!-- Year Filter -->
+            <div style="display: inline-flex;font-family: entezar;margin-bottom: 1em;margin-top: 1.5em">
+                {% if current_year_index > 1300 %}
+                    <!-- Previous -->
+                     <a title="قبلی" class="btn btn-secondary" style="margin-left: 3em" type="button" value="previous_year" onclick="goToPreviousYear({{ current_year_index }})">
+                        <svg width="16" height="16" fill="white" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                        </svg>
+                     </a>
+                {% endif %}
+
+                <h5 style="font-family: entezar;margin-left: 3em"> {{ current_year }} </h5>
+                <!-- Next -->
+                <a title="بعدی" class="btn btn-secondary" style="margin-left: 3em;margin-right: 3em" type="button" value="next_year" onclick="goToNextYear({{ current_year_index }})">
+                    <svg width="16" height="16" fill="white" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </a>
+                <input type="hidden" value="{{ current_year_index }}" name="year" id="year">
+            </div>
+
+            <br>
+
+            <!-- Month Filter -->
+            <div style="display: inline-flex;font-family: entezar;margin-bottom: 1.5em">
+                <!-- Previous -->
+                <a title="قبلی" class="btn btn-secondary" style="margin-left: 3em" type="button" value="previous_month" onclick="goToPreviousMonth({{ current_year_index }},{{ current_month_index }})">
+                    <svg width="16" height="16" fill="white" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                        <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                    </svg>
+                </a>
+
+                <h5 style="font-family: entezar;margin-left: 2.5em;margin-right: 2.5em"> {{ current_month }} </h5>
+                <!-- Next -->
+                <a title="بعدی" class="btn btn-secondary" style="margin-right: 3em" type="button" value="next_month"  onclick="goToNextMonth({{ current_year_index }},{{ current_month_index }})">
+                    <svg width="16" height="16" fill="white" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                        <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                    </svg>
+                </a>
+                <input type="hidden" value="{{ current_month_index }}" name="month" id="month">
+            </div>
+        </div>
+
+
+
+
+
+
+<script>
+    function goToNextMonth(current_year_index, current_month_index) {
+        const MonthFilter = document.getElementById('month')
+        const YearFilter = document.getElementById('year')
+
+        if (current_month_index === 12){
+            MonthFilter.value = 1;
+            YearFilter.value = current_year_index + 1;
+
+        }else{
+            MonthFilter.value = current_month_index + 1;
+        }
+        $('#filterForm').submit();
+}
+
+    function goToPreviousMonth(current_year_index, current_month_index) {
+        const MonthFilter = document.getElementById('month')
+        const YearFilter = document.getElementById('year')
+
+        if (current_month_index === 1){
+            MonthFilter.value = 12;
+            YearFilter.value = current_year_index - 1;
+
+        }else{
+            MonthFilter.value = current_month_index - 1;
+        }
+        $('#filterForm').submit();
+}
+
+
+    function goToNextYear(current_year_index) {
+        const YearFilter = document.getElementById('year')
+        YearFilter.value = current_year_index + 1;
+        $('#filterForm').submit();
+}
+
+    function goToPreviousYear(current_year_index) {
+        const YearFilter = document.getElementById('year')
+        YearFilter.value = current_year_index - 1;
+        $('#filterForm').submit();
+}
+
+</script>

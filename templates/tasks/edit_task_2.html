@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+ {% load static %}
+
+
+{% block content %}
+
+    <div class="card text-right" style="background: linear-gradient(171deg, var(--bs-cyan) 0%, var(--bs-cyan) 20%, var(--bs-cyan) 100%);margin-top: 2em;margin-bottom: 2em;margin-left: 2em;margin-right: 2em;">
+        <div class="card-header" style="font-family: titr">
+            <a href="../../" class="btn btn-light" style="float:left;margin: 0.5em">
+                <svg  width="16" height="16" fill="currentcolor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+                  <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                </svg>
+            </a>
+            <h4 style="font-family: titr;color: #ffffff;float: right">ویرایش برنامه اقدام</h4>
+        </div>
+        <div class="card-body">
+            <form method="post" action="">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3" style="font-family: nazanin;">
+                        <p style="float: right;color: #ffffff">:{{ field.label }}</p>
+                        {{ field }}
+                        <!-- TODO delivery_date field doesn't have  a font -->
+                    </div>
+                {% endfor %}
+
+                <div style="font-family: titr" class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">ثبت</button></div>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="{% static './ImTheAuthor/ValidatorChange.js' %}"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('FormMonth').options[{{ Month }} - 1].selected = 'selected';
+    document.getElementById('Validator').options[{{ PreviousValidator }}].selected = 'selected';
+    ValidatorChange();
+    //document.getElementById('multiple-checkboxes').options[1].selected = 'selected'
+    //document.getElementById('multiple-checkboxes').options[0].selected = 'selected'
+
+
+});
+</script>
+
+
+{% endblock %}

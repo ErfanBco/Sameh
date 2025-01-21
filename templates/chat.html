@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block files %}
+    <link rel="stylesheet" href="{% static './chat/normalize.min.css' %}">
+    <link rel="stylesheet" href="{% static './chat/chat4.css' %}">
+
+{% endblock files %}
+
+{% block style %}
+    .Header{
+        float: right;
+        display: block
+        color: black;
+        margin: 0.825em 0;
+        font-family: entezar;
+    }
+    .subHeader{
+        display: inline-block
+        color: black;
+        margin: 0.25em 0.5em;
+        font-family: entezar
+    }
+
+{% endblock style %}
+
+
+
+{% block content %}
+    <div  style="border-radius: 5px;margin: 2em 29em;background-color: #FFFFFF;display: block;">
+        <a href="../../" class="btn btn-dark" style="margin: 0.5em">
+            <svg  width="16" height="16" fill="currentcolor" class="bi bi-box-arrow-left" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0v2z"/>
+              <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+            </svg>
+        </a>
+
+        <div style="display: block;float:right;">
+            <div>
+                <svg style="margin: 0.875em 1em;float: right;" width="25" height="25" fill="black" class="bi bi-person-circle" viewBox="0 0 16 16">
+                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+                <a class="Header" style="color: black;direction: rtl">
+                    گفت و گو در مورد  <strong>{{ TaskTitle }}</strong>
+                </a>
+            </div>
+            <!-- TODO last seen is nit implemented -->
+            <!--<p class="subHeader">آخرین بازدید 15 مرداد</p>-->
+        </div>
+
+
+
+    </div>
+
+    <div class="--dark-theme" id="chat">
+      <div class="chat__conversation-board" id="chat_board">
+        {% if MessagesCount == 0 %}
+            <div style="font-family: entezar;display: grid;place-items: center;margin-bottom: 5em;margin-top: 2em">پیامی یافت نشد</div>
+        {% endif %}
+        {% for Message in Messages %}
+            {% if Message.sender == userID %}
+        <div class="chat__conversation-board__message-container reversed">
+            {% else %}
+        <div class="chat__conversation-board__message-container">
+            {% endif %}
+
+          <div class="chat__conversation-board__message__context">
+            <div class="chat__conversation-board__message__bubble">
+                {% if  Message.systemMessage %}
+                    <span style="--chat-bubble-background: #FF7417;--chat-text-color: #FFFFFF;font-family: nazanin;font-size: large;text-justify: auto;text-align: justify;direction: rtl">
+                {% else %}
+                    <span style="--chat-text-color: #FFFFFF;font-family: nazanin;font-size: large;text-justify: auto;text-align: justify;direction: rtl">
+                {% endif %}
+                    <p style="text-align: right;font-family: titr;color: #CCCCCC">{{ Message.sender_name }}</p>
+                    {% autoescape off %}
+                    <a style="direction: rtl">{{ Message.message }}</a>
+                    {% endautoescape %}
+                </span>
+
+            </div>
+          </div>
+          <div class="chat__conversation-board__message__options">
+              <p style="font-family: nazanin">{{ Message.send_date }}</p>
+              {% if Message.sender == userID %}
+                  {% if  Message.seen %}
+                        <svg style="margin-left: 1em;margin-top: 0.5em" width="16" height="16" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                          <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/>
+                        </svg>
+                      <p style="font-family: nazanin">خوانده شده</p>
+                  {% else %}
+                      <svg style="margin-left: 1em;margin-top: 0.5em" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                          <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z"/>
+                      </svg>
+                      <p style="font-family: nazanin">ارسال شده</p>
+                  {% endif %}
+              {% endif %}
+
+          </div>
+        </div>
+        {% endfor %}
+
+
+
+
+      {% if  inProgress %}
+
+          <div class="chat__conversation-panel" style="height: max-content">
+            <div>
+              <form id="sendMsgForm" action="" method="post" style="display:inline-flex;">
+                  {% csrf_token %}
+                  <!--<button class="chat__conversation-panel__button panel-item btn-icon add-file-button">
+                    <svg class="feather feather-plus sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="12" y1="5" x2="12" y2="19"></line>
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                  </button>
+                  <button class="chat__conversation-panel__button panel-item btn-icon emoji-button">
+                    <svg class="feather feather-smile sc-dnqmqq jxshSx" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+                      <line x1="9" y1="9" x2="9.01" y2="9"></line>
+                      <line x1="15" y1="9" x2="15.01" y2="9"></line>
+                    </svg>
+                  </button>-->
+                  <textarea  rows="7" cols="100" name="message" class="chat__conversation-panel__input panel-item" style="font-family: nazanin;font-size: large;text-align: right; display: inline-block;direction: rtl" placeholder="پیامی را بنویسید..."></textarea>
+                  <button onclick="$('#sendMsgForm').submit();" class="chat__conversation-panel__button panel-item btn-icon send-message-button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-reactid="1036">
+                          <line x1="22" y1="2" x2="11" y2="13"></line>
+                          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      </svg>
+                  </button>
+
+              </form>
+            </div>
+          </div>
+        </div>
+
+      {% endif %}
+
+    <script>
+        //sends the scroll to the bottom
+        var objDiv = document.getElementById("chat_board");
+        objDiv.scrollTop = objDiv.scrollHeight;
+    </script>
+
+    <script  src="{% static './chat/chat_script.js' %}"></script>
+{% endblock content %}

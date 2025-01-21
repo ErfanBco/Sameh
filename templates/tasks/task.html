@@ -1,0 +1,79 @@
+    {% extends 'base.html' %}
+    {% load static %}
+
+
+    {% block content %}
+             {% include 'navbar.html' %}
+
+
+      		<div class="wrapper d-flex align-items-stretch">
+                {% if employeesCount != 0 %}
+
+                        <nav id="sidebar" class="order-last" class="img">
+                            <div class="custom-menu">
+                                <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                        </button>
+                    </div>
+                    <div class="">
+                            {% include 'tasks/create/createForm.html' %}
+                    </div>
+
+                    </nav>
+                {% endif %}
+
+                <!-- Page Content  -->
+              <div id="content" class="p-4 p-md-5 pt-5">
+                <!--<h5 class="mb-4" style="float: right;font-family: titr">کارتابل</h5>-->
+
+                {% include 'tasks/filter.html' %}
+
+                {% include 'messages.html' %}
+                    {% if TasksCount == 0 %}
+                        <h5 style="display: block;margin-top: 2em;text-align: center;color: #4f4d4d;font-family: titr">!برنامه اقدامی یافت نشد</h5>
+                    {% endif %}
+                    {% for Task in Tasks %}
+                        {% include 'tasks/show/card.html' %}
+                    {% endfor %}
+
+
+                      {% include 'tasks/edit_task.html'%}
+
+              </div>
+
+
+                </div>
+
+
+                <!--<div class="pagination_section" style="font-family: entezar;margin-bottom: 6em;margin-right: 4em;margin-left: 4em">
+                    <a href="#"><< Previous</a>
+                    <a href="#"
+                       title="Algorithm">1</a>
+                    <a href="#"
+                       title="DataStructure">2</a>
+                    <a href="#"
+                       title="Languages">3</a>
+                    <a href="#"
+                       title="Interview"
+                       class="active">4</a>
+                    <a href="#"
+                       title="practice">5</a>
+                    <a href="#">Next >></a>
+                </div>-->
+    
+
+
+            </div>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('FormMonth').options[{{ ThisMonth }} - 1].selected = 'selected'
+});
+</script>
+
+
+
+
+
+    {% endblock %}

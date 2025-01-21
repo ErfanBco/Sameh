@@ -1,0 +1,49 @@
+{% load static %}
+<html>
+  <head>
+    <!-- include Vue 2.x -->
+    <script src="{% static './vue-select/vue2.7.js' %}"></script>
+    <!-- include vue-treeselect & its styles. you can change the version tag to better suit your needs. -->
+    <script src="{% static './vue-select/vue-treeselect.umd.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static './vue-select/vue-treeselect.min.css' %}">
+  </head>
+  <body>
+    <div id="app">
+      <treeselect v-model="value" :multiple="true" :options="options" />
+    </div>
+
+
+
+    <script>
+    // register the component
+    Vue.component('treeselect', VueTreeselect.Treeselect)
+
+    new Vue({
+      el: '#app',
+      data: {
+        // define the default value
+        value: null,
+        // define options
+        options: [ {
+          id: 'a',
+          label: 'a',
+          children: [ {
+            id: 'aa',
+            label: 'aa',
+          }, {
+            id: 'ab',
+            label: 'ab',
+          } ],
+        }, {
+          id: 'b',
+          label: 'b',
+        }, {
+          id: 'c',
+          label: 'c',
+        } ],
+      },
+    })
+  </script>
+
+  </body>
+</html>
